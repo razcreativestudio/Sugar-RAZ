@@ -6,13 +6,13 @@
 #include "RAZMainWindow.h"
 #include "RAZSidebar.h"
 #include "RAZThemeManager.h"
-#include "RAZHub.h"
+#include "RAZTabManager.h"
+#include "RAZLuaEngine.h"
 #include <iostream>
 
 #ifdef QT_CORE_LIB
     #include <QHBoxLayout>
     #include <QApplication>
-    #include <QWebEngineView> // Asumsikan kita punya view untuk konten
 #endif
 
 // Constructor
@@ -53,27 +53,20 @@ void RAZMainWindow::initUI() {
         RAZSidebar* sidebar = new RAZSidebar(centralWidget);
         mainLayout->addWidget(sidebar);
 
-        // Placeholder untuk Web Content (Sisa ruang)
-        // Di implementasi nyata, ini adalah QWebEngineView
-        QWidget* webContentPlaceholder = new QWidget(centralWidget);
+        // Implementasi Tab Manager sebagai widget utama
+        RAZTabManager* tabManager = new RAZTabManager(centralWidget);
+        mainLayout->addWidget(tabManager, 1); // Stretch factor 1
 
-        // Memuat RAZ Hub (Dashboard)
-        RAZHub hub;
-        std::string hubContent = hub.getDashboardHTML();
-
-        // Simulasi loading konten ke view
-        // webView->setHtml(QString::fromStdString(hubContent));
-
-        webContentPlaceholder->setStyleSheet("background-color: #222;"); // Dark grey placeholder
-        mainLayout->addWidget(webContentPlaceholder, 1); // Stretch factor 1
     #else
-        RAZHub hub;
-        std::string hubContent = hub.getDashboardHTML();
+        RAZTabManager* mockTabs = new RAZTabManager(nullptr);
 
         std::cout << "[UI-MOCK] Layout utama diinisialisasi (Horizontal Split)." << std::endl;
         std::cout << "[UI-MOCK] Sidebar ditambahkan ke kiri." << std::endl;
-        std::cout << "[UI-MOCK] Style sheet diterapkan." << std::endl;
-        std::cout << "[UI-MOCK] RAZ Hub dimuat ke area konten utama (Preview HTML):" << std::endl;
-        std::cout << "          " << hubContent.substr(0, 80) << "..." << std::endl;
+        std::cout << "[UI-MOCK] Tab Manager ditambahkan ke kanan." << std::endl;
+
+        // [FASE 5] Simulasi Modding Load saat startup
+        RAZLuaEngine modEngine;
+        modEngine.registerNativeFunctions();
+        modEngine.runScript("mods/autorun.lua");
     #endif
 }

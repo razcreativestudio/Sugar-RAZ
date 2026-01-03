@@ -97,6 +97,14 @@ public:
     QWebEngineSettings* settings() { return nullptr; }
 };
 
+class QTabWidget : public QWidget {
+public:
+    QTabWidget(QWidget* p) : QWidget(p) {}
+    void addTab(QWidget*, const char*) {}
+    void setTabsClosable(bool) {}
+    QWidget* currentWidget() { return nullptr; }
+};
+
 #endif // MOCK_CLASSES_DEFINED
 #endif // !QT_CORE_LIB
 

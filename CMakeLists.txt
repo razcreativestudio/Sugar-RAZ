@@ -29,6 +29,8 @@ set(SOURCES
     src/RAZAdBlocker.cpp
     src/RAZEngineOptimizer.cpp
     src/RAZHub.cpp
+    src/RAZTabManager.cpp
+    src/RAZLuaEngine.cpp
 )
 
 set(HEADERS
@@ -40,6 +42,8 @@ set(HEADERS
     include/RAZAdBlocker.h
     include/RAZEngineOptimizer.h
     include/RAZHub.h
+    include/RAZTabManager.h
+    include/RAZLuaEngine.h
 )
 
 # --- Test Suite ---
