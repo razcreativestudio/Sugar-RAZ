@@ -28,6 +28,7 @@ set(SOURCES
     src/RAZThemeManager.cpp
     src/RAZAdBlocker.cpp
     src/RAZEngineOptimizer.cpp
+    src/RAZHub.cpp
 )
 
 set(HEADERS
@@ -38,7 +39,17 @@ set(HEADERS
     include/RAZThemeManager.h
     include/RAZAdBlocker.h
     include/RAZEngineOptimizer.h
+    include/RAZHub.h
 )
+
+# --- Test Suite ---
+add_executable(RAZTestRunner src/RAZTestRunner.cpp src/RAZTestEngine.cpp src/RAZThemeManager.cpp src/RAZAdBlocker.cpp src/RAZHub.cpp)
+target_include_directories(RAZTestRunner PRIVATE include)
+if(WIN32)
+    target_compile_definitions(RAZTestRunner PRIVATE PLATFORM_WINDOWS)
+else()
+    target_compile_definitions(RAZTestRunner PRIVATE PLATFORM_LINUX)
+endif()
 
 # --- Executable ---
 if(ANDROID)

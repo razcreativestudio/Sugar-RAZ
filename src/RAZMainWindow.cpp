@@ -6,11 +6,13 @@
 #include "RAZMainWindow.h"
 #include "RAZSidebar.h"
 #include "RAZThemeManager.h"
+#include "RAZHub.h"
 #include <iostream>
 
 #ifdef QT_CORE_LIB
     #include <QHBoxLayout>
     #include <QApplication>
+    #include <QWebEngineView> // Asumsikan kita punya view untuk konten
 #endif
 
 // Constructor
@@ -52,12 +54,26 @@ void RAZMainWindow::initUI() {
         mainLayout->addWidget(sidebar);
 
         // Placeholder untuk Web Content (Sisa ruang)
+        // Di implementasi nyata, ini adalah QWebEngineView
         QWidget* webContentPlaceholder = new QWidget(centralWidget);
+
+        // Memuat RAZ Hub (Dashboard)
+        RAZHub hub;
+        std::string hubContent = hub.getDashboardHTML();
+
+        // Simulasi loading konten ke view
+        // webView->setHtml(QString::fromStdString(hubContent));
+
         webContentPlaceholder->setStyleSheet("background-color: #222;"); // Dark grey placeholder
         mainLayout->addWidget(webContentPlaceholder, 1); // Stretch factor 1
     #else
+        RAZHub hub;
+        std::string hubContent = hub.getDashboardHTML();
+
         std::cout << "[UI-MOCK] Layout utama diinisialisasi (Horizontal Split)." << std::endl;
         std::cout << "[UI-MOCK] Sidebar ditambahkan ke kiri." << std::endl;
-        std::cout << "[UI-MOCK] Style sheet diterapkan: " << style.substr(0, 50) << "..." << std::endl;
+        std::cout << "[UI-MOCK] Style sheet diterapkan." << std::endl;
+        std::cout << "[UI-MOCK] RAZ Hub dimuat ke area konten utama (Preview HTML):" << std::endl;
+        std::cout << "          " << hubContent.substr(0, 80) << "..." << std::endl;
     #endif
 }
