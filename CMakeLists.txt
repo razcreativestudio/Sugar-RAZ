@@ -93,3 +93,41 @@ elseif(ANDROID)
 else()
     target_compile_definitions(SugarRAZ PRIVATE PLATFORM_LINUX)
 endif()
+
+# --- Instalasi (Persiapan CPack) ---
+# Mengatur kemana file akan dicopy saat "make install" atau pembuatan installer
+
+# 1. Install Executable
+install(TARGETS SugarRAZ DESTINATION bin)
+
+# 2. Install Resources (Assets)
+install(DIRECTORY resources DESTINATION .)
+
+# 3. Install Mods (Contoh script)
+install(DIRECTORY mods DESTINATION .)
+
+# 4. Install Helper Scripts (Optional)
+install(FILES scripts/run_tests.sh DESTINATION scripts)
+
+# --- Konfigurasi CPack (Installer Generator) ---
+set(CPACK_PACKAGE_NAME "SugarRAZBrowser")
+set(CPACK_PACKAGE_VENDOR "RAZ Community")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Browser Gaming Ringan dengan AdBlocker Native")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "SugarRAZ")
+
+# Lisensi (Opsional, buat dummy file jika belum ada)
+# set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+
+if(WIN32)
+    # Konfigurasi khusus Windows (NSIS Installer -> .exe)
+    set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_DISPLAY_NAME "Sugar RAZ Browser")
+    set(CPACK_NSIS_CONTACT "support@sugarraz.com")
+    set(CPACK_NSIS_MODIFY_PATH ON) # Tambahkan ke PATH variable
+else()
+    # Konfigurasi untuk Linux/Mac (Zip/TGZ)
+    set(CPACK_GENERATOR "TGZ")
+endif()
+
+include(CPack)
