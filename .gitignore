@@ -1,0 +1,33 @@
+# Build directories
+build/
+bin/
+lib/
+cmake-build-*/
+
+# Executables
+*.exe
+*.out
+SugarRAZ
+
+# Object files
+*.o
+*.obj
+
+# Libraries
+*.a
+*.so
+*.dll
+*.dylib
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# IDE config (Optional)
+.vscode/
+.idea/
+*.user
