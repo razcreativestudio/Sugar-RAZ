@@ -8,6 +8,8 @@
 #include "RAZMainWindow.h"
 #include "RAZEngineOptimizer.h"
 #include "RAZAdBlocker.h"
+#include "RAZSettingsManager.h"
+#include "RAZCacheManager.h"
 
 #ifdef QT_CORE_LIB
     #include <QWebEngineProfile>
@@ -22,18 +24,29 @@ RAZBrowser::RAZBrowser() {
 
     std::cout << "[INFO] RAZBrowser Core diinisialisasi." << std::endl;
 
-    // [FASE 3] Pasang AdBlocker
-    RAZAdBlocker* adBlocker = new RAZAdBlocker(nullptr); // Parenting nanti diatur
+    // [FASE 7] Fast Startup: Mulai Cache Warming segera
+    RAZCacheManager::instance().startCacheWarming();
 
-    #ifdef QT_CORE_LIB
-        QWebEngineProfile::defaultProfile()->setRequestInterceptor(adBlocker);
-    #else
-        std::cout << "[CORE] Mengaktifkan Ad-Blocker pada Profil Default." << std::endl;
+    // Load Settings
+    RAZSettingsManager::instance().loadSettings();
+    bool adBlockEnabled = RAZSettingsManager::instance().isAdBlockerEnabled();
 
-        // Simulasi trigger intercept request untuk verifikasi
-        QWebEngineUrlRequestInfo mockInfo;
-        adBlocker->interceptRequest(mockInfo);
-    #endif
+    // [FASE 3] Pasang AdBlocker (Jika diaktifkan di settings)
+    if (adBlockEnabled) {
+        RAZAdBlocker* adBlocker = new RAZAdBlocker(nullptr); // Parenting nanti diatur
+
+        #ifdef QT_CORE_LIB
+            QWebEngineProfile::defaultProfile()->setRequestInterceptor(adBlocker);
+        #else
+            std::cout << "[CORE] Mengaktifkan Ad-Blocker pada Profil Default." << std::endl;
+
+            // Simulasi trigger intercept request untuk verifikasi
+            QWebEngineUrlRequestInfo mockInfo;
+            adBlocker->interceptRequest(mockInfo);
+        #endif
+    } else {
+        std::cout << "[CORE] Ad-Blocker dinonaktifkan oleh user." << std::endl;
+    }
 }
 
 // Implementasi Destructor
@@ -89,9 +102,9 @@ int main(int argc, char *argv[]) {
     // Membuat instance baru dari Sugar RAZ
     RAZBrowser sugarRaz;
 
-    // Mengatur batas penggunaan RAM agar tetap ringan (Limit 2GB)
-    // Penjelasan: Ini memanggil fungsi internal engine untuk alokasi memori
-    sugarRaz.setRamLimit(2048);
+    // Mengatur batas penggunaan RAM dari Saved Settings
+    int savedRamLimit = RAZSettingsManager::instance().getRamLimit();
+    sugarRaz.setRamLimit(savedRamLimit);
 
     // Menampilkan Antarmuka Pengguna (UI)
     sugarRaz.launchUI();

@@ -10,6 +10,7 @@
 #include "RAZThemeManager.h"
 #include "RAZTabManager.h"
 #include "RAZLuaEngine.h"
+#include "RAZSettingsManager.h"
 #include <iostream>
 
 #ifdef QT_CORE_LIB
@@ -28,7 +29,8 @@
 // Dalam Qt asli, kita pakai Slot member class
 static void onRamLimitChanged(int value) {
     std::cout << "[LOGIC] Controller menerima perubahan limit RAM: " << value << " MB" << std::endl;
-    // Panggil logika core di sini
+    // Simpan ke settings
+    RAZSettingsManager::instance().setRamLimit(value);
 }
 
 // Constructor
@@ -80,6 +82,8 @@ void RAZMainWindow::initUI() {
         // Resource Limiter (Overlay/Window terpisah biasanya, tapi kita taruh di layout untuk demo)
         RAZResourceLimiterUI* limiter = new RAZResourceLimiterUI(nullptr);
         limiter->setLimitCallback(onRamLimitChanged);
+        // Load nilai awal dari settings (TODO: implement setter di UI)
+        // limiter->setValue(RAZSettingsManager::instance().getRamLimit());
         // limiter->show(); // Tampilkan jika tombol ditekan
 
     #else
