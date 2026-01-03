@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include "RAZBrowserCore.h"
+#include "RAZMainWindow.h"
 
 // Implementasi Constructor
 RAZBrowser::RAZBrowser() {
@@ -39,12 +40,15 @@ void RAZBrowser::setRamLimit(int limitMB) {
 void RAZBrowser::launchUI() {
     std::cout << "[UI] Memulai Antarmuka Pengguna Sugar RAZ..." << std::endl;
 
-    #ifdef QT_CORE_LIB
-        // Kode Qt nyata akan berjalan di sini
-        // webView->show();
-    #else
+    // Inisialisasi Main Window
+    // Penjelasan: Menggunakan pointer agar object tetap hidup selama aplikasi berjalan
+    // (Dalam aplikasi nyata, ini biasanya dikelola oleh smart pointer atau stack main loop)
+    static RAZMainWindow* mainWindow = new RAZMainWindow();
+    mainWindow->show();
+
+    #ifndef QT_CORE_LIB
         std::cout << "[MODE DEV] Menjalankan simulasi UI (Tanpa Qt Engine)." << std::endl;
-        std::cout << "         Jendela browser 'virtual' terbuka." << std::endl;
+        std::cout << "         Jendela browser 'virtual' terbuka dengan arsitektur baru." << std::endl;
     #endif
 }
 

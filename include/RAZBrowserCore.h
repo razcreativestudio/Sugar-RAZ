@@ -16,9 +16,7 @@
     #include <QWebEngineView>
     #include <QApplication>
 #else
-    // Mock classes untuk keperluan kompilasi di lingkungan tanpa Qt
-    class QApplication {};
-    class QWebEngineView {};
+    #include "RAZMockCommon.h"
 #endif
 
 // Kelas RAZBrowser

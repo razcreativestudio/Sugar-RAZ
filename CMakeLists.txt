@@ -22,11 +22,18 @@ endif()
 # --- Definisi Source Code ---
 set(SOURCES
     src/RAZMainController.cpp
-    # src/RAZBrowserCore.cpp (Akan ditambahkan nanti)
+    src/RAZMainWindow.cpp
+    src/RAZSidebar.cpp
+    src/RAZResourceLimiterUI.cpp
+    src/RAZThemeManager.cpp
 )
 
 set(HEADERS
     include/RAZBrowserCore.h
+    include/RAZMainWindow.h
+    include/RAZSidebar.h
+    include/RAZResourceLimiterUI.h
+    include/RAZThemeManager.h
 )
 
 # --- Executable ---
