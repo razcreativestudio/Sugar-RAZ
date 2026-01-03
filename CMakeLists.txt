@@ -31,6 +31,7 @@ set(SOURCES
     src/RAZHub.cpp
     src/RAZTabManager.cpp
     src/RAZLuaEngine.cpp
+    src/RAZSidePanel.cpp
 )
 
 set(HEADERS
@@ -44,6 +45,7 @@ set(HEADERS
     include/RAZHub.h
     include/RAZTabManager.h
     include/RAZLuaEngine.h
+    include/RAZSidePanel.h
 )
 
 # --- Test Suite ---

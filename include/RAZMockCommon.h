@@ -51,10 +51,14 @@ public:
     QSlider(int, QWidget*) {}
     void setRange(int, int) {}
     void setValue(int) {}
+    // Mock signal connection
+    // Di Qt asli: connect(sender, signal, receiver, slot)
 };
 class QLabel : public QWidget {
 public:
     QLabel(const char*, QWidget*) {}
+    void setText(const char*) {} // Tambahkan mock setText
+    // void setText(const QString&) {} // Hapus overload QString karena QString belum tentu ada di mock minimal
 };
 
 namespace Qt {

@@ -17,15 +17,26 @@
 // Kelas RAZResourceLimiterUI
 // Penjelasan: Panel untuk mengatur batas penggunaan sistem.
 class RAZResourceLimiterUI : public QWidget {
+    // Q_OBJECT // Diperlukan di Qt asli untuk Signals & Slots
 public:
     explicit RAZResourceLimiterUI(QWidget* parent = nullptr);
     ~RAZResourceLimiterUI();
+
+    // Fungsi simulasi signal (karena kita tidak pakai MOC di environment ini)
+    // Di aplikasi nyata, gunakan: signals: void ramLimitChanged(int limit);
+    void onSliderValueChanged(int value);
+
+    // Setter untuk callback eksternal (Mocking logic wiring)
+    void setLimitCallback(void (*callback)(int));
 
 private:
     void setupUI();
 
     QSlider* ramSlider;
     QLabel* lblRamValue;
+
+    // Pointer fungsi callback untuk simulasi koneksi signal
+    void (*limitCallback)(int);
 };
 
 #endif // RAZRESOURCELIMITERUI_H
