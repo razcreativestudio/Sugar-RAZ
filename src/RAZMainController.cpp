@@ -6,15 +6,34 @@
 #include <iostream>
 #include "RAZBrowserCore.h"
 #include "RAZMainWindow.h"
+#include "RAZEngineOptimizer.h"
+#include "RAZAdBlocker.h"
+
+#ifdef QT_CORE_LIB
+    #include <QWebEngineProfile>
+#else
+    #include "RAZMockCommon.h"
+#endif
 
 // Implementasi Constructor
 RAZBrowser::RAZBrowser() {
     ramLimit = 0; // Default tidak terbatas
     webView = nullptr;
 
-    // Inisialisasi komponen engine
-    // Di lingkungan nyata dengan Qt, kita akan melakukan 'new QWebEngineView()' di sini
     std::cout << "[INFO] RAZBrowser Core diinisialisasi." << std::endl;
+
+    // [FASE 3] Pasang AdBlocker
+    RAZAdBlocker* adBlocker = new RAZAdBlocker(nullptr); // Parenting nanti diatur
+
+    #ifdef QT_CORE_LIB
+        QWebEngineProfile::defaultProfile()->setRequestInterceptor(adBlocker);
+    #else
+        std::cout << "[CORE] Mengaktifkan Ad-Blocker pada Profil Default." << std::endl;
+
+        // Simulasi trigger intercept request untuk verifikasi
+        QWebEngineUrlRequestInfo mockInfo;
+        adBlocker->interceptRequest(mockInfo);
+    #endif
 }
 
 // Implementasi Destructor
@@ -63,6 +82,9 @@ int main(int argc, char *argv[]) {
     #ifdef QT_CORE_LIB
     QApplication app(argc, argv);
     #endif
+
+    // [FASE 3] Terapkan Optimasi Engine sebelum UI dimuat
+    RAZEngineOptimizer::applyOptimizations();
 
     // Membuat instance baru dari Sugar RAZ
     RAZBrowser sugarRaz;

@@ -63,6 +63,40 @@ namespace Qt {
 
 class QWebEngineView : public QWidget {};
 
+// --- Mocks untuk Fase 3 (Network & Settings) ---
+
+class QWebEngineUrlRequestInfo {
+public:
+    enum ResourceType { ResourceTypeMainFrame, ResourceTypeImage, ResourceTypeXhr };
+    void block(bool) {}
+    const char* requestUrl() { return "https://googleads.g.doubleclick.net/pagead/ads"; } // Mock URL
+};
+
+class QWebEngineUrlRequestInterceptor : public QObject {
+public:
+    QWebEngineUrlRequestInterceptor(QObject* parent = nullptr) {} // Tambahkan constructor yang menerima parent
+    virtual void interceptRequest(QWebEngineUrlRequestInfo &info) = 0;
+};
+
+class QWebEngineSettings {
+public:
+    enum WebAttribute {
+        JavascriptEnabled,
+        PluginsEnabled,
+        LocalStorageEnabled,
+        AutoLoadImages,
+        DnsPrefetchEnabled
+    };
+    void setAttribute(WebAttribute, bool) {}
+};
+
+class QWebEngineProfile {
+public:
+    static QWebEngineProfile* defaultProfile() { return nullptr; }
+    void setRequestInterceptor(QWebEngineUrlRequestInterceptor*) {}
+    QWebEngineSettings* settings() { return nullptr; }
+};
+
 #endif // MOCK_CLASSES_DEFINED
 #endif // !QT_CORE_LIB
 

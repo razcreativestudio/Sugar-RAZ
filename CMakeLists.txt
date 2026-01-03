@@ -26,6 +26,8 @@ set(SOURCES
     src/RAZSidebar.cpp
     src/RAZResourceLimiterUI.cpp
     src/RAZThemeManager.cpp
+    src/RAZAdBlocker.cpp
+    src/RAZEngineOptimizer.cpp
 )
 
 set(HEADERS
@@ -34,6 +36,8 @@ set(HEADERS
     include/RAZSidebar.h
     include/RAZResourceLimiterUI.h
     include/RAZThemeManager.h
+    include/RAZAdBlocker.h
+    include/RAZEngineOptimizer.h
 )
 
 # --- Executable ---
